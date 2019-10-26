@@ -67,13 +67,14 @@ func (a *App) Initialize() {
 	a.api.petMap[2] = Pet{2, "meow", catCat, "active", catTags, catUrls}
 
 	connectionString := fmt.Sprintf("host=%s port=%s user=%s "+
-		"password=%s dbname=%s sslmode=%s",
+		"password=%s dbname=%s sslmode=%s connect_timeout=%d",
 		viper.GetString("db-server.host"),
 		viper.GetString("db-server.port"),
 		viper.GetString("db-server.user-id"),
 		viper.GetString("db-server.secret"),
 		viper.GetString("db-server.db-name"),
 		viper.GetString("db-server.ssl-mode"),
+		viper.GetInt("db-server.connect_timeout"),
 	)
 
 	log.Println("connecting to database")
