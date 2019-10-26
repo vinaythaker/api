@@ -3,10 +3,13 @@
 package api
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -111,16 +114,20 @@ func (a *App) Run() {
 	}()
 }
 
-/*
-func (a *App) Run() {
-	// Start Server
-	if err := a.server.ListenAndServe(); err != nil {
-		log.Println(err)
-	} else {
-		log.Println(err)
+func (a *App) WaitOnShutdown() {
+	// Setting up signal capturing
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt)
+
+	// Waiting for SIGINT (pkill -2)
+	<-stop
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := a.server.Shutdown(ctx); err != nil {
+		log.Fatal(err)
 	}
 }
-*/
 
 func (a *App) createDB(db *sql.DB) error {
 
