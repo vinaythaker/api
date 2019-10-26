@@ -95,13 +95,21 @@ func (a *App) Initialize() {
 }
 
 // Run ...
-func (a *App) Run() {
+/*func (a *App) Run() {
 	// Start Server
 	go func() {
 		if err := a.server.ListenAndServe(); err != nil {
 			log.Println(err)
 		}
 	}()
+}*/
+func (a *App) Run() {
+	// Start Server
+	if err := a.server.ListenAndServe(); err != nil {
+		log.Println(err)
+	} else {
+		log.Println(err)
+	}
 }
 
 func (a *App) createDB(db *sql.DB) error {
