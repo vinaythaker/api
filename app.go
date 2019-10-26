@@ -76,15 +76,21 @@ func (a *App) Initialize() {
 		viper.GetString("db-server.ssl-mode"),
 	)
 
+	log.Println("connecting to database")
+
 	a.db, err = sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	log.Println("creating db")
+
 	err = a.createDB(a.db)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Println("creating http server")
 
 	a.server = &http.Server{
 		Handler:      a.Router,
@@ -95,14 +101,16 @@ func (a *App) Initialize() {
 }
 
 // Run ...
-/*func (a *App) Run() {
+func (a *App) Run() {
 	// Start Server
 	go func() {
 		if err := a.server.ListenAndServe(); err != nil {
 			log.Println(err)
 		}
 	}()
-}*/
+}
+
+/*
 func (a *App) Run() {
 	// Start Server
 	if err := a.server.ListenAndServe(); err != nil {
@@ -111,6 +119,7 @@ func (a *App) Run() {
 		log.Println(err)
 	}
 }
+*/
 
 func (a *App) createDB(db *sql.DB) error {
 
