@@ -80,21 +80,21 @@ func (a *App) Initialize() {
 		viper.GetInt("db-server.connect_timeout"),
 	)
 
-	log.Println("connecting to database")
+	log.Println("Connecting to database...")
 
 	a.db, err = sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("creating db")
+	log.Println("Creating db...")
 
 	err = a.createDB(a.db)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("creating http server")
+	log.Println("Creating http server...")
 
 	a.server = &http.Server{
 		Handler:      a.Router,
